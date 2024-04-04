@@ -649,40 +649,6 @@ def get_invoice_details(invoice_id):
     perf_acc_no = invoice_details[18]
     return invoice_id, perf_name, client_name, client_company, perf_phn, perf_email, booking_date, venue_name, venue_rate, perf_st_address, perf_suburb, perf_state, perf_post_code, perf_abn, perf_bank_name, perf_acc_name, perf_bsb, perf_acc_no
 
-#def load_tex_file():
-    with open("invoice_template.tex", "r") as file:
-        tex_content = file.read()
-    return tex_content
-
-#def save_tex_file():
-    tex_content = tex_text.get("1.0", "end-1c")  # Retrieve updated content from text widget
-    with open("new_invoice.tex", "w") as file:
-        file.write(tex_content)
-
-#def update_invoice():
-    lines = open("invoice_template.tex").readlines()
-    invoice_id = get_selected_invoice_id()
-    lines[90] = get_invoice_details(invoice_id)[1]
-    lines[26] = get_invoice_details(invoice_id)[2]
-    lines[29] = get_invoice_details(invoice_id)[3]
-    lines[32] = get_invoice_details(invoice_id)[4]
-    lines[36] = get_invoice_details(invoice_id)[5] #email handle i.e. mathewjonathmusic
-    lines[40] = get_invoice_details(invoice_id)[5] #email host i.e. @gmail.com
-    #lines[34] = current date
-    lines[38] = get_invoice_details(invoice_id)[6] #BOOKING DATE -> INV NUMBER = YYYY MMDD
-    lines[54] = get_invoice_details(invoice_id)[6] #booking date in itemised billing table DD/MM/YY
-    lines[56] = get_invoice_details(invoice_id)[7]
-    lines[58] = get_invoice_details(invoice_id)[8]
-    lines[43] = get_invoice_details(invoice_id)[9]
-    lines[72] = get_invoice_details(invoice_id)[10]
-    lines[74] = get_invoice_details(invoice_id)[11]
-    lines[75] = get_invoice_details(invoice_id)[12]
-    lines[80] = get_invoice_details(invoice_id)[13]
-    lines[100] = get_invoice_details(invoice_id)[14]
-    lines[103] = get_invoice_details(invoice_id)[15]
-    lines[106] = get_invoice_details(invoice_id)[16]
-    lines[109] = get_invoice_details(invoice_id)[17]
-    open("new_invoice.tex", "w").writelines(lines)
 
 def update_invoice():
     invoice_id = get_selected_invoice_id()
@@ -694,9 +660,9 @@ def update_invoice():
     lines[32] = str(invoice_details[4]) #+ '\n' #phn
     lines[36] = (invoice_details[5]).split('@')[0] #+ '\n'  # Email handle i.e. mathewjonathmusic
     lines[40] = "@" + (invoice_details[5]).split('@')[1] #+ '\n'  # Email host i.e. @gmail.com
-        # lines[34] = current date
-    lines[38] = str(invoice_details[6]) #+ '\n'  # BOOKING DATE -> INV NUMBER = YYYY MMDD
-    lines[54] = str(invoice_details[6])# + '\n'  # Booking date in itemized billing table DD/MM/YY
+    lines[34] = datetime.date.today().strftime("%A, %d %B, %Y")
+    lines[38] = datetime.datetime.strptime(invoice_details[6], '%Y-%m-%d').strftime('%Y %m%d')# BOOKING DATE -> INV NUMBER = YYYY MMDD
+    lines[54] = datetime.datetime.strptime(invoice_details[6], '%Y-%m-%d').strftime('%d %b %Y') # Booking date in itemized billing table DD/MM/YY
     lines[56] = str(invoice_details[7]) #+ '\n' #venue Name
     lines[58] = str(invoice_details[8]) #+ '\n' #venue rate
     lines[43] = str(invoice_details[9]) #+ '\n' #Perf street
