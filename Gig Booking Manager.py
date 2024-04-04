@@ -903,10 +903,13 @@ submit_button.grid(row=5, column=0, columnspan=2, pady=10)
 client_display_frame.grid(row=7, column=0, columnspan=2, pady=20)
 client_display_label = Label(page_two_frame, text="")
 update_client_display(client_display_label)
+#delete Client Label
+del_client_label = Label(page_client_details_frame, text="Delete Client")
+del_client_label.grid(row=9, column=0)
 #create Dropdown widget
 client_list_dropdown = ttk.Combobox(page_client_details_frame)
 client_list_dropdown['values'] = get_client_options()
-client_list_dropdown.grid(row=9, column=0, columnspan=2, pady=5)
+client_list_dropdown.grid(row=9, column=1, columnspan=2, pady=5)
 #DELETE BUTTON
 del_button = Button(page_client_details_frame, text="Delete", command= delete_client_entry)
 del_button.grid(row=10, column=0, columnspan=2, pady=5)
@@ -917,7 +920,7 @@ back_button.grid(row=12, column=0, columnspan=2, pady=10)
 
 #PAGE 2 LAYOUT
 #heading
-page_two_heading = Label(page_two_frame, text="INSERT INTO Venue")
+page_two_heading = Label(page_two_frame, text="Manage Venues")
 page_two_heading.grid(row=0, column=0, columnspan=2)
 
 #row 1:
@@ -951,11 +954,13 @@ venue_list_frame.grid(row=7, column=0, columnspan=2, pady=20)
 venue_label = Label(page_two_frame, text="")
 #venue_label.grid(row=7, column=0, columnspan=2)
 update_venue_display(venue_label)
-
+#delete Venue Label
+del_venue_label = Label(page_two_frame, text="Delete Venue")
+del_venue_label.grid(row=9, column=0)
 #create Dropdown widget
 attr2_1_dropdown = ttk.Combobox(page_two_frame)
 attr2_1_dropdown['values'] = get_venue_options()
-attr2_1_dropdown.grid(row=9, column=0, columnspan=2, pady=5)
+attr2_1_dropdown.grid(row=9, column=1, columnspan=2, pady=5)
 
 #DELETE BUTTON
 del_button = Button(page_two_frame, text="Delete", command= delete_venue_entry)
@@ -970,17 +975,17 @@ back_button.grid(row=12, column=0, columnspan=2, pady=10)
 
 #PAGE 3 LAYOUT
 #heading
-page_three_heading = Label(page_three_frame, text="Navigate Funtions for Table_3")
+page_three_heading = Label(page_three_frame, text="Manage Bookings")
 page_three_heading.grid(row=0, column=0, columnspan=5)
 
 #NAV Button to add entries to table_3
-page_3a_button = Button(page_three_frame, text="Page 3a", command=lambda: show_page(page_three_a_frame))
+page_3a_button = Button(page_three_frame, text="Add New Booking", command=lambda: show_page(page_three_a_frame))
 page_3a_button.grid(row=1, column=0, columnspan=5)
 #NAV Button to display entries to table_3
-page_3b_button = Button(page_three_frame, text="Page 3b", command=lambda: show_page(page_three_b_frame))
+page_3b_button = Button(page_three_frame, text="View Upcoming", command=lambda: show_page(page_three_b_frame))
 page_3b_button.grid(row=2, column=0, columnspan=5)
 #NAV Button to create document from table_3
-page_3c_button = Button(page_three_frame, text="Page 3c", command=lambda: show_page(page_three_c_frame))
+page_3c_button = Button(page_three_frame, text="Create Invoice", command=lambda: show_page(page_three_c_frame))
 page_3c_button.grid(row=3, column=0, columnspan=5)
 
 #BACK BUTTON
@@ -991,7 +996,7 @@ back_button.grid(row=4, column=0, columnspan=5, pady=10)
 
 #PAGE 3a LAYOUT
 #heading
-page_3a_heading = Label(page_three_a_frame, text="INSERT INTO Table_3")
+page_3a_heading = Label(page_three_a_frame, text="New Booking")
 page_3a_heading.grid(row=0, column=0, columnspan=5)
 
 #row 1:
@@ -1034,9 +1039,11 @@ booking_fin_am_pm_spinbox = ttk.Spinbox(page_three_a_frame, values=("PM", "AM"),
 booking_fin_am_pm_spinbox.grid(row=4, column=4, padx=5)
 booking_fin_am_pm_spinbox.set("AM")
 #row 5:
+select_client_label = ttk.Label(page_three_a_frame, text="Client")
+select_client_label.grid(row=5, column=0)
 select_client_dropdown = ttk.Combobox(page_three_a_frame)
 select_client_dropdown['values'] = get_client_options()
-select_client_dropdown.grid(row=5, column=0, columnspan=5, pady=5)
+select_client_dropdown.grid(row=5, column=1, columnspan=5, pady=5)
 #Submit Button
 create_booking_button = Button(page_three_a_frame, text="Submit", command=create_booking)
 create_booking_button.grid(row=6, column=0, columnspan=5, pady=10)
@@ -1047,22 +1054,13 @@ back_button.grid(row=7, column=0, columnspan=5, pady=10)
 
 #PAGE 3b LAYOUT
 #heading
-page_3b_heading = Label(page_three_b_frame, text="DISPLAY Table_3")
+page_3b_heading = Label(page_three_b_frame, text="Upcoming")
 page_3b_heading.grid(row=0, column=0, columnspan=5)
-
-"""
-#create Dropdown widget (Replaces ENTRY)
-booking_month_select_dropdown = ttk.Combobox(page_three_b_frame)
-booking_month_select_dropdown['values'] = ()
-booking_month_select_dropdown.grid(row=2, column=1, columnspan=6, pady=5)
-"""
 
 future_bookings_frame.grid(row=2, column=0, columnspan=5, pady=10)
 
 # Call the function to display future bookings
 display_future_bookings()
-
-
 
 #BACK BUTTON
 back_button = Button(page_three_b_frame, text="Back", command=lambda: show_page(page_three_frame))
@@ -1071,10 +1069,10 @@ back_button.grid(row=4, column=0, columnspan=5, pady=10)
 
 #PAGE 3c LAYOUT
 #heading
-page_3c_heading = Label(page_three_c_frame, text="Create doc from Table_3")
+page_3c_heading = Label(page_three_c_frame, text="Manage Invoices")
 page_3c_heading.grid(row=0, column=0, columnspan=5)
 
-select_booking_label = ttk.Label(page_three_c_frame, text="Select Booking:")
+select_booking_label = ttk.Label(page_three_c_frame, text="Select Booking for New Invoice:")
 select_booking_label.grid(row=1, column=0)
 create_invoice_dropdown = ttk.Combobox(page_three_c_frame)
 create_invoice_dropdown['values'] = get_possible_invoices()
@@ -1082,7 +1080,7 @@ create_invoice_dropdown.grid(row=1, column=2, columnspan=4, pady=5)
 create_invoice_button = Button(page_three_c_frame, text="Create Invoice", command=create_invoice)
 create_invoice_button.grid(row=2, column=0, columnspan=5, pady=10)
 
-select_invoice_label = ttk.Label(page_three_c_frame, text="Select Invoice:")
+select_invoice_label = ttk.Label(page_three_c_frame, text="Select Existing Invoice:")
 select_invoice_label.grid(row=3, column=0)
 display_invoice_dropdown = ttk.Combobox(page_three_c_frame)
 display_invoice_dropdown['values'] = get_existing_invoices()
