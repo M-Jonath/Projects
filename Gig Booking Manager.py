@@ -654,26 +654,27 @@ def update_invoice():
     invoice_id = get_selected_invoice_id()
     invoice_details = get_invoice_details(invoice_id)
     lines = open("invoice_template.tex").readlines()
-    lines[91] = (invoice_details[1]) #+ '\n' #perf Name
-    lines[26] = (invoice_details[2]) #+ '\n' #CLient Name
-    lines[29] = (invoice_details[3]) #+ '\n' # Client Company
-    lines[32] = str(invoice_details[4]) #+ '\n' #phn
-    lines[36] = (invoice_details[5]).split('@')[0] #+ '\n'  # Email handle i.e. mathewjonathmusic
-    lines[40] = "@" + (invoice_details[5]).split('@')[1] #+ '\n'  # Email host i.e. @gmail.com
+    lines[91] = (invoice_details[1]) #perf Name
+    lines[26] = (invoice_details[2]) #CLient Name
+    lines[29] = (invoice_details[3]) # Client Company
+    lines[32] = str(invoice_details[4]) #phn
+    lines[36] = (invoice_details[5]).split('@')[0] # Email handle i.e. mathewjonathmusic
+    lines[40] = "@" + (invoice_details[5]).split('@')[1] # Email host i.e. @gmail.com
     lines[34] = datetime.date.today().strftime("%A, %d %B, %Y")
     lines[38] = datetime.datetime.strptime(invoice_details[6], '%Y-%m-%d').strftime('%Y %m%d')# BOOKING DATE -> INV NUMBER = YYYY MMDD
     lines[54] = datetime.datetime.strptime(invoice_details[6], '%Y-%m-%d').strftime('%d %b %Y') # Booking date in itemized billing table DD/MM/YY
-    lines[56] = str(invoice_details[7]) #+ '\n' #venue Name
-    lines[58] = str(invoice_details[8]) #+ '\n' #venue rate
-    lines[43] = str(invoice_details[9]) #+ '\n' #Perf street
-    lines[73] = str(invoice_details[10]) #+ '\n' #perf Sub
-    lines[75] = str(invoice_details[11]) #+ '\n' #perf State
-    lines[76] = str(invoice_details[12]) #+ '\n' #Perf Postcode
-    lines[81] = str(invoice_details[13]) #+ '\n' #perf ABN
-    lines[101] = str(invoice_details[14]) #+ '\n' # bank Name
-    lines[104] = str(invoice_details[15]) #+ '\n' #acc name
-    lines[107] = str(invoice_details[16]) #+ '\n' #bsb
-    lines[110] = str(invoice_details[17]) #+ '\n' #acc
+    lines[56] = str(invoice_details[7]) #venue Name
+    lines[58] = "\$" + str(invoice_details[8]) #venue rate
+    lines[67] = "\$" + str(invoice_details[8]) #invoice total
+    lines[43] = str(invoice_details[9]) #Perf street
+    lines[73] = str(invoice_details[10]) #perf Sub
+    lines[75] = str(invoice_details[11]) #perf State
+    lines[76] = str(invoice_details[12]) #Perf Postcode
+    lines[81] = str(invoice_details[13]) #perf ABN
+    lines[101] = str(invoice_details[14]) # bank Name
+    lines[104] = str(invoice_details[15]) #acc name
+    lines[107] = str(invoice_details[16]) #bsb
+    lines[110] = str(invoice_details[17]) #acc
     open("new_invoice.tex", "w").writelines(lines)
    
 
