@@ -428,15 +428,10 @@ def get_client_options():
     global client_data
     c.execute("SELECT client_id, client_name, client_company FROM client")
     client_data = c.fetchall()
-    client_options = [f"{item[1]} {item[2]}" for item in client_data]
+    client_options = [f"{item[1]} ({item[2]})" for item in client_data]
     return client_options
 
-#def get_selected_client_id():
-    selected_venue_name = booking_venue_dropdown.get()
-    for data in venue_data:
-        if data[1] == selected_venue_name:
-            return data[0]
-    return None  # Handle if venue_id is not found
+
 
 def delete_client_entry():
     selected_client = get_selected_client_id()
@@ -510,7 +505,7 @@ def get_selected_venue_id():
 def get_selected_client_id():
     selected_client_data = select_client_dropdown.get() or client_list_dropdown.get()
     for item in client_data:
-        if f"{item[1]} {item[2]}" == selected_client_data:
+        if f"{item[1]} ({item[2]})" == selected_client_data:
             return item[0]
     return None  # Handle if venue_id is not found
 
@@ -576,13 +571,13 @@ def get_possible_invoices():
     WHERE invoice.booking_id IS NULL
     ''')
     possible_invoice_data = c.fetchall()
-    create_invoice_options = [f"{item[1]} {item[2]}" for item in possible_invoice_data]
+    create_invoice_options = [f"{item[1]} {datetime.datetime.strptime(item[2], '%Y-%m-%d').strftime('%d %b %y')}" for item in possible_invoice_data]
     return create_invoice_options
 
 def get_selected_booking_id():
     selected_booking_data = create_invoice_dropdown.get()
     for item in possible_invoice_data:
-        if f"{item[1]} {item[2]}" == selected_booking_data:
+        if f"{item[1]} {datetime.datetime.strptime(item[2], '%Y-%m-%d').strftime('%d %b %y')}" == selected_booking_data:
             return item[0]
     return None  # Handle if venue_id is not found
 
@@ -606,13 +601,13 @@ def get_existing_invoices():
     WHERE invoice.booking_id
     ''')
     existing_invoice_data = c.fetchall()
-    create_existing_invoice_options = [f"{item[1]} {item[2]}" for item in existing_invoice_data]
+    create_existing_invoice_options = [f"{datetime.datetime.strptime(item[2], '%Y-%m-%d').strftime('%Y %m%d')} ({item[1]})" for item in existing_invoice_data]
     return create_existing_invoice_options
 
 def get_selected_invoice_id():
     selected_invoice_data = display_invoice_dropdown.get()
     for item in existing_invoice_data:
-        if f"{item[1]} {item[2]}" == selected_invoice_data:
+        if f"{datetime.datetime.strptime(item[2], '%Y-%m-%d').strftime('%Y %m%d')} ({item[1]})" == selected_invoice_data:
             return item[0]
     return None
     
