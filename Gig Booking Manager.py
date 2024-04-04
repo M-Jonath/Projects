@@ -8,6 +8,8 @@ import datetime
 #from PIL import Image, ImageTk
 import subprocess
 from pdf2image import convert_from_path
+from PIL import Image, ImageTk
+
 
 
 #Create global Window
@@ -136,12 +138,24 @@ c.execute("""CREATE TABLE IF NOT EXISTS invoice (
 
 #DEFINE FUNCTIONS REQUIRED FOR PROGRAM
 
+
 def show_page(target_frame):
     for page in pages:
         if page == target_frame:
             page.pack()  # Show the target frame
         else:
             page.pack_forget()  # Hide all other frames
+
+def wipe_database():
+    c.execute("PRAGMA foreign_keys=off;")
+    c.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = c.fetchall()
+    for table in tables:
+        c.execute(f"DELETE FROM {table[0]};")
+    c.execute("PRAGMA foreign_keys=on;")
+    conn.commit()
+    
+
 
 
 #Page 1 Functions
@@ -671,36 +685,31 @@ def get_invoice_details(invoice_id):
     open("new_invoice.tex", "w").writelines(lines)
 
 def update_invoice():
-    try:
-        invoice_id = get_selected_invoice_id()
-        invoice_details = get_invoice_details(invoice_id)
-
-        lines = open("invoice_template.tex").readlines()
-        lines[90] = (invoice_details[1]) #+ '\n' #perf Name
-#        lines[26] = (invoice_details[2]) #+ '\n' #CLient Name
-#        lines[29] = (invoice_details[3]) #+ '\n' # Client Company
-#        lines[32] = str(invoice_details[4]) #+ '\n' #phn
-#        lines[36] = (invoice_details[5]) #+ '\n'  # Email handle i.e. mathewjonathmusic
-#        lines[40] = (invoice_details[5]) #+ '\n'  # Email host i.e. @gmail.com
+    invoice_id = get_selected_invoice_id()
+    invoice_details = get_invoice_details(invoice_id)
+    lines = open("invoice_template.tex").readlines()
+    lines[91] = (invoice_details[1]) #+ '\n' #perf Name
+    lines[26] = (invoice_details[2]) #+ '\n' #CLient Name
+    lines[29] = (invoice_details[3]) #+ '\n' # Client Company
+    lines[32] = str(invoice_details[4]) #+ '\n' #phn
+    lines[36] = (invoice_details[5]).split('@')[0] #+ '\n'  # Email handle i.e. mathewjonathmusic
+    lines[40] = "@" + (invoice_details[5]).split('@')[1] #+ '\n'  # Email host i.e. @gmail.com
         # lines[34] = current date
-#        lines[38] = str(invoice_details[6]) #+ '\n'  # BOOKING DATE -> INV NUMBER = YYYY MMDD
-#        lines[54] = str(invoice_details[6])# + '\n'  # Booking date in itemized billing table DD/MM/YY
- #       lines[56] = str(invoice_details[7]) #+ '\n' #venue Name
-  #      lines[58] = str(invoice_details[8]) #+ '\n' #venue rate
-   #     lines[43] = str(invoice_details[9]) #+ '\n' #Perf street
-    #    lines[72] = str(invoice_details[10]) #+ '\n' #perf Sub
-     #   lines[74] = str(invoice_details[11]) #+ '\n' #perf State
-      #  lines[75] = str(invoice_details[12]) #+ '\n' #Perf Postcode
-#       lines[80] = str(invoice_details[13]) #+ '\n' #perf ABN
-#        lines[100] = str(invoice_details[14]) #+ '\n' # bank Name
-#        lines[103] = str(invoice_details[15]) #+ '\n' #acc name
-#        lines[106] = str(invoice_details[16]) #+ '\n' #bsb
-#        lines[109] = str(invoice_details[17]) #+ '\n' #acc
-
-        with open("new_invoice.tex", "w") as file:
-            file.writelines(lines)
-    except Exception as e:
-        print("An error occurred:", e)
+    lines[38] = str(invoice_details[6]) #+ '\n'  # BOOKING DATE -> INV NUMBER = YYYY MMDD
+    lines[54] = str(invoice_details[6])# + '\n'  # Booking date in itemized billing table DD/MM/YY
+    lines[56] = str(invoice_details[7]) #+ '\n' #venue Name
+    lines[58] = str(invoice_details[8]) #+ '\n' #venue rate
+    lines[43] = str(invoice_details[9]) #+ '\n' #Perf street
+    lines[73] = str(invoice_details[10]) #+ '\n' #perf Sub
+    lines[75] = str(invoice_details[11]) #+ '\n' #perf State
+    lines[76] = str(invoice_details[12]) #+ '\n' #Perf Postcode
+    lines[81] = str(invoice_details[13]) #+ '\n' #perf ABN
+    lines[101] = str(invoice_details[14]) #+ '\n' # bank Name
+    lines[104] = str(invoice_details[15]) #+ '\n' #acc name
+    lines[107] = str(invoice_details[16]) #+ '\n' #bsb
+    lines[110] = str(invoice_details[17]) #+ '\n' #acc
+    open("new_invoice.tex", "w").writelines(lines)
+   
 
 
 def compile_tex_to_pdf():
@@ -712,10 +721,28 @@ def convert_to_png():
     for i, image in enumerate(images):
         image.save(f'Output_{i}.png', 'PNG')
 
+def display_png():
+    try:
+        image_path = 'Output_0.png'
+        img = Image.open(image_path)
+        img = img.resize((500, 707), Image.LANCZOS)
+        img_tk = ImageTk.PhotoImage(img)
+
+        popup_window = Toplevel(root)
+        popup_window.title("Display Image")
+
+        label = Label(popup_window, image=img_tk)
+        label.image = img_tk
+        label.pack()
+
+    except FileNotFoundError:
+        print("Output image not found.")
+
 def display_invoice():
     update_invoice()
     compile_tex_to_pdf()
     convert_to_png()
+    display_png()
 
     
 
@@ -754,6 +781,8 @@ goto_page_two_button.pack(pady=10)
 # Button to navigate to Page three
 goto_page_three_button = Button(home_frame, text="Manage Bookings", command=lambda: show_page(page_three_frame))
 goto_page_three_button.pack(pady=10)
+wipe_button = Button(home_frame, text="Wipe Database", command= wipe_database)
+wipe_button.pack(pady=10)
 home_frame.pack(fill='both', expand=True)
 
 
