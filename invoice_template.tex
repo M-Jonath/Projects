@@ -1,0 +1,124 @@
+\documentclass[11pt]{letter}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks]{hyperref}
+\usepackage[left=1in,top=1in,right=1in,bottom=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{ragged2e}
+\usepackage{hhline}
+\usepackage{array}
+\usepackage{xcolor}
+
+% Change font to Helvetica (sans-serif)
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\begin{document}
+
+%Header
+\textcolor{black}{\rule{\textwidth}{1pt}}
+MATHEW JONATH MUSIC
+
+\vspace{1cm}
+
+\begin{tabularx}{\textwidth}{p{0.25\textwidth}X}
+    \multirow{2}{=}{TAX INVOICE} & Attn: 
+    Test Client
+    \\
+    & \hspace{5mm} 
+    Test Company
+    \\
+    \vspace{5mm} \\
+    TEST PHONE
+    & Date: 
+    TEST DD/MM/YYY
+    \\
+    Test Email
+    & Invoice Number: 
+    TEST YYYY MMDD
+    \\
+    TEST @gmail.com
+    & Terms: 28 Days \\
+    \vspace{5mm} \\
+    TEST STREET
+    & 
+    {
+    \renewcommand{\arraystretch}{1.2} % Increase the height of the cells in the nested table
+    \multirow{8}{=}{ % Group starts here
+        \begin{tabular}{|p{0.15\textwidth}|p{0.3\textwidth}|p{0.15\textwidth}|}
+            \hline
+            Date & Description & Total \\
+            \hline
+            & Live Performance At: & \\
+            \hline 
+            TEST DD/MM/YY
+             & 
+            TEST Venue NAME
+            & 
+            TEST Venue RATE 
+            \\
+            \hline
+            %DD/MM/YY & Venue NAME & Venue RATE 
+            &&\\
+            \hline
+            &&\\
+            \hline
+            & Total (This Invoice) & \$
+            TOTAL
+            \\
+            \hline
+        \end{tabular}
+    } % Group ends here
+    }\\
+    TEST SUBURB
+    \\
+    TEST STATE 
+    TEST POST
+    \\
+    Australia \\
+    \\
+    ABN: 
+    TEST ABN
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    & Sincerely yours, \\
+    & 
+who?
+    \\
+\end{tabularx}
+
+\vspace{5cm}
+
+
+
+\begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}p{0.8\textwidth} r}
+Bank: & 
+TEST BANK 
+\\
+Acc Name: & 
+TEST ACC NAME
+\\
+BSB: & 
+TEST BSB
+ \\
+Acc No: & 
+TEST ACC NUM
+ \\
+\end{tabularx}
+
+\vfill
+
+\textcolor{black}{\rule{\textwidth}{1pt}}
+Not Registered For GST
+
+
+
+\end{document}
+
+
