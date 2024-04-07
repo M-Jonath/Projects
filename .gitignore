@@ -1,0 +1,20 @@
+.DS_Store
+invoice_template.aux
+invoice_template.fdb_latexmk
+invoice_template.fls
+invoice_template.log
+invoice_template.out
+invoice_template.pdf
+invoice_template.synctex.gz
+new_invoice.aux
+new_invoice.fdb_latexmk
+new_invoice.fls
+new_invoice.log
+new_invoice.out
+
+
+
+
+
+# Ignore files beginning in "new_"
+**/new_*
