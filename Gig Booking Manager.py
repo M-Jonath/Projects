@@ -588,6 +588,8 @@ def create_invoice():
     conn.commit()
     create_invoice_dropdown.set('')
     create_invoice_dropdown['values'] = get_possible_invoices()
+    display_invoice_dropdown['values'] = get_existing_invoices()
+
 
 
 
