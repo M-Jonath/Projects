@@ -9,6 +9,7 @@ import datetime
 import subprocess
 from pdf2image import convert_from_path
 from PIL import Image, ImageTk
+import os
 
 
 
@@ -75,10 +76,17 @@ bookings_treeview.column("Start Time", width=80)
 bookings_treeview.pack(fill="both", expand=True)
 
 
-# Create/connect to DB
-conn = sqlite3.connect('Gig_Bookings.db')
+# Get the directory of the current script file
+script_directory = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the absolute path to the database file in the same directory as the script
+db_file_path = os.path.join(script_directory, 'Gig_Bookings.db')
+
+# Connect to the database using the absolute path
+conn = sqlite3.connect(db_file_path)
 c = conn.cursor()
 c.execute("PRAGMA foreign_keys = ON")
+
 
 
 # Create TABLES
@@ -650,7 +658,9 @@ def get_invoice_details(invoice_id):
 def update_invoice():
     invoice_id = get_selected_invoice_id()
     invoice_details = get_invoice_details(invoice_id)
-    lines = open("invoice_template.tex").readlines()
+    invoice_template = os.path.join(script_directory, 'invoice_template.tex')
+
+    lines = open(invoice_template).readlines()
     lines[91] = (invoice_details[1]) #perf Name
     lines[26] = (invoice_details[2]) #CLient Name
     lines[29] = (invoice_details[3]) # Client Company
@@ -672,22 +682,25 @@ def update_invoice():
     lines[104] = str(invoice_details[15]) #acc name
     lines[107] = str(invoice_details[16]) #bsb
     lines[110] = str(invoice_details[17]) #acc
-    open("new_invoice.tex", "w").writelines(lines)
+    output_file = os.path.join(script_directory, "new_invoice.tex")
+
+    open(output_file, "w").writelines(lines)
    
 
 
 def compile_tex_to_pdf():
-    tex_file = 'new_invoice.tex'
+    tex_file = os.path.join(script_directory, 'new_invoice.tex')
     subprocess.run(['pdflatex', tex_file])
 
 def convert_to_png():
-    images = convert_from_path('new_invoice.pdf')
+    pdf_file = os.path.join(script_directory, 'new_invoice.pdf')
+    images = convert_from_path(pdf_file)
     for i, image in enumerate(images):
         image.save(f'Output_{i}.png', 'PNG')
 
 def display_png():
     try:
-        image_path = 'Output_0.png'
+        image_path = os.path.join(script_directory, 'Output_0.png')
         img = Image.open(image_path)
         img = img.resize((500, 707), Image.LANCZOS)
         img_tk = ImageTk.PhotoImage(img)
